@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Bibliotecas de terceiros
+    'rest_framework',             # Django REST Framework (a API)
+    'rest_framework.authtoken',   # Tabela de tokens para autenticação
+    'drf_spectacular',  # Documentação Swagger
+    # Apps do projeto
+    'cardapio',
 ]
 
 MIDDLEWARE = [
@@ -102,9 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Recife'
 
 USE_I18N = True
 
@@ -124,4 +130,32 @@ MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
+}
+
+
+# Configurações globais do Django REST Framework
+REST_FRAMEWORK = {
+    # Quem pode fazer o quê:
+    # - sem login: só leitura (GET)
+    # - com login/token: pode criar, editar e excluir
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    # Formas aceitas de se identificar na API
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # Header: Authorization: Token <chave>
+        'rest_framework.authentication.SessionAuthentication',  # Login pelo navegador (interface da DRF)
+    ],
+    # Paginação: a listagem vem em "páginas" de 5 itens (?page=2 para a próxima)
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,
+    # Gera o esquema OpenAPI usado pelo Swagger
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# Informações que aparecem no topo da página do Swagger
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API da Lanchonete',
+    'DESCRIPTION': 'Cardápio (categorias e produtos), áreas de entrega e consulta de municípios no IBGE.',
+    'VERSION': '1.0.0',
 }

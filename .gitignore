@@ -1,0 +1,14 @@
+# Ambiente virtual (cada um cria o seu com: python -m venv venv)
+venv/
+.venv/
+
+# Banco de dados local (os dados de exemplo estao em cardapio.json)
+db.sqlite3
+
+# Arquivos gerados pelo Python
+__pycache__/
+*.pyc
+
+# Configuracoes de editor
+.vscode/
+.idea/

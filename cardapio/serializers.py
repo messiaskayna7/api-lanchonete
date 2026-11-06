@@ -20,6 +20,10 @@ class ProdutoSerializer(serializers.ModelSerializer):
     # Campo extra, só de leitura: pega o nome através do relacionamento
     # (produto.categoria.nome). No envio (POST) basta mandar o id em "categoria".
     categoria_nome = serializers.CharField(source='categoria.nome', read_only=True)
+    # Declaramos o preço "na mão" para que a regra de preço negativo seja
+    # verificada pelo nosso validate_preco (com a nossa mensagem), e não pelo
+    # validador do model (que continua protegendo o admin).
+    preco = serializers.DecimalField(max_digits=8, decimal_places=2)
 
     class Meta:
         model = Produto
@@ -35,6 +39,8 @@ class ProdutoSerializer(serializers.ModelSerializer):
 
 
 class AreaEntregaSerializer(serializers.ModelSerializer):
+    taxa_entrega = serializers.DecimalField(max_digits=6, decimal_places=2)
+
     class Meta:
         model = AreaEntrega
         fields = ['id', 'municipio', 'codigo_ibge', 'taxa_entrega']

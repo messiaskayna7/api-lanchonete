@@ -1,3 +1,4 @@
+from django.db.models import ProtectedError
 from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
@@ -22,6 +23,17 @@ class CategoriaViewSet(viewsets.ModelViewSet):
     # SearchFilter: permite ?search=lanche
     filter_backends = [filters.SearchFilter]
     search_fields = ['nome']
+
+    def destroy(self, request, *args, **kwargs):
+        # Como o ForeignKey usa on_delete=PROTECT, o banco não deixa apagar uma
+        # categoria que ainda tem produtos. Em vez de erro 500, devolvemos 400.
+        try:
+            return super().destroy(request, *args, **kwargs)
+        except ProtectedError:
+            return Response(
+                {'erro': 'Esta categoria ainda tem produtos. Exclua ou mova os produtos antes.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
     # @action cria uma rota extra dentro do viewset.
     # detail=True -> a rota usa o id: /api/categorias/{id}/produtos/

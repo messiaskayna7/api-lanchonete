@@ -1,3 +1,46 @@
+Sistema de lanchonete
+Nome: Messias Kaynã Ferreira de Souza
+
+URL: http://127.0.0.1:8000/admin/
+Usuário: admin
+Senha: admin123
+
+Tecnologias:
+Python é a linguagem de programação usada em todo o projeto.
+
+Django é o framework web que cuida do banco, das rotas e do painel admin.
+
+DRF (Django REST Framework) é a extensão do Django que facilita criar APIs REST, com serializers, ViewSets e autenticação.
+
+drf-spectacular gera automaticamente a documentação da API no Swagger.
+
+REST é um jeito de montar APIs em que cada coisa (produto, categoria) tem uma URL, e o método HTTP diz o que fazer com ela. Cada requisição é independente, por isso o token vai sempre junto.
+
+GET busca dados.
+POST cria.
+PUT substitui o registro inteiro.
+PATCH altera só alguns campos.
+DELETE apaga.
+
+Como rodar o projeto:
+
+venv\Scripts\activate
+python manage.py runserver
+
+Depois abra http://127.0.0.1:8000/admin/ no navegador e entre com admin / admin123.
+
+Para quem baixar o projeto do GitHub pela primeira vez, a sequência completa é esta:
+
+git clone <url-do-repositorio>
+cd Lanchonete
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py loaddata cardapio.json
+python manage.py createsuperuser
+python manage.py runserver
+
 RESUMO GERAL:
 O Admin (/admin/), cadastra as coisas no navegador, a API(/api/), um site ou app pede os dados e recebe em JSON.
 
